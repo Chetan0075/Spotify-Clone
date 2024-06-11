@@ -18,11 +18,11 @@ function secondsTominutesseconds(seconds) {
 // Fetch Songs Link From PC
 async function getsongs(folder) {
     currfolder = folder;
-    let a = await fetch(`http://127.0.0.1:5500/${folder}/`)
+    let a = await fetch(`./${folder}/`);
     let response = await a.text();
-    let div = document.createElement("div")
+    let div = document.createElement("div");
     div.innerHTML = response;
-    let as = div.getElementsByTagName("a")
+    let as = div.getElementsByTagName("a");
     songs = []
     for (let index = 0; index < as.length; index++) {
         const element = as[index];
