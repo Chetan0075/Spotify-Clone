@@ -142,7 +142,7 @@ async function displayAlbums() {
 
 async function main() {
     // Get the list of all the songs
-    await getsongs("songs/SHUB")
+    await getsongs("/SHUB")
     playMusic(songs[0], true)
 
 
