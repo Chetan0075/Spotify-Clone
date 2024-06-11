@@ -94,7 +94,7 @@ async function displayAlbums() {
 
                 try {
                     // Fetch metadata for each album
-                    let metaResponse = await fetch(`/songs/${folder}/info.json`);
+                    let metaResponse = await fetch(`./songs/${folder}/info.json`);
 
                     if (!metaResponse.ok) {
                         throw new Error(`Failed to fetch metadata for folder: ${folder}`);
