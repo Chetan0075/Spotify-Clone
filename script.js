@@ -17,45 +17,54 @@ function secondsTominutesseconds(seconds) {
 // Fetch Songs Link From Folder
 async function getsongs(folder) {
     currfolder = folder;
-    let response = await fetch(`./${folder}/`);
-    let text = await response.text();
-    let div = document.createElement("div");
-    div.innerHTML = text;
-    let as = div.getElementsByTagName("a");
-    songs = [];
-    for (let index = 0; index < as.length; index++) {
-        const element = as[index];
-        if (element.href.endsWith(".mp3")) {
-            songs.push(element.href.split(`/${folder}/`)[1]);
+    try {
+        let response = await fetch(`./${folder}/`);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch songs from ${folder}`);
         }
-    }
+        let text = await response.text();
+        let div = document.createElement("div");
+        div.innerHTML = text;
+        let as = div.getElementsByTagName("a");
+        songs = [];
+        for (let index = 0; index < as.length; index++) {
+            const element = as[index];
+            if (element.href.endsWith(".mp3")) {
+                songs.push(element.href.split(`/${folder}/`)[1]);
+            }
+        }
 
-    // Show all the songs in the playlist
-    let songUL = document.querySelector(".songlist").getElementsByTagName("ul")[0];
-    songUL.innerHTML = "";
-    for (const song of songs) {
-        songUL.innerHTML += `<li>
-            <img class="invert" src="musiclogo.svg" alt="">
-            <div class="info">
-                <div class="songname"> ${song.replaceAll("%20", " ")}</div>
-                <div class="songartist"></div>
-            </div>
-            <div class="playnow">
-                <span>Play Now</span>
-                <img class="invert" src="play.svg" alt="">
-            </div>
-        </li>`;
-    }
+        // Show all the songs in the playlist
+        let songUL = document.querySelector(".songlist").getElementsByTagName("ul")[0];
+        songUL.innerHTML = "";
+        for (const song of songs) {
+            songUL.innerHTML += `<li>
+                <img class="invert" src="musiclogo.svg" alt="">
+                <div class="info">
+                    <div class="songname"> ${song.replaceAll("%20", " ")}</div>
+                    <div class="songartist"></div>
+                </div>
+                <div class="playnow">
+                    <span>Play Now</span>
+                    <img class="invert" src="play.svg" alt="">
+                </div>
+            </li>`;
+        }
 
-    // Attach event listener to each song
-    Array.from(document.querySelector(".songlist").getElementsByTagName("li")).forEach(e => {
-        e.addEventListener("click", element => {
-            playMusic(e.querySelector(".info").firstElementChild.innerHTML.trim());
+        // Attach event listener to each song
+        Array.from(document.querySelector(".songlist").getElementsByTagName("li")).forEach(e => {
+            e.addEventListener("click", element => {
+                playMusic(e.querySelector(".info").firstElementChild.innerHTML.trim());
+            });
         });
-    });
 
-    return songs;
+        return songs;
+    } catch (error) {
+        console.error(error);
+        // Handle the error (e.g., display an error message to the user)
+    }
 }
+
 
 const playMusic = (track, pause = false) => {
     currentsong.src = `./${currfolder}/` + track;
