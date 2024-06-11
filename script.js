@@ -76,7 +76,7 @@ const playMusic = (track, pause = false) => {
 async function displayAlbums() {
     try {
         // Fetch the list of songs/albums
-        let response = await fetch('http://127.0.0.1:5500/songs/');
+        let response = await fetch('./songs/');
         let textResponse = await response.text();
 
         // Parse the response to extract links
